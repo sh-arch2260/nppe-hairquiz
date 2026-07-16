@@ -666,6 +666,54 @@ function buildFlexBubble(p) {
     }
   };
 }
+  
+function buildIntroBubble() {
+  return {
+    type: "bubble",
+    size: "kilo",
+    body: {
+      type: "box",
+      layout: "vertical",
+      paddingAll: "0px",
+      backgroundColor: "#FDFBF7",
+      contents: [
+        {
+          type: "image",
+          url: "https://raw.githubusercontent.com/sh-arch2260/product-catalog/master/esuchen/result-card.png",
+          size: "full",
+          aspectRatio: "1:1",
+          aspectMode: "cover"
+        },
+        {
+          type: "box",
+          layout: "horizontal",
+          backgroundColor: "#FFFFFF",
+          paddingAll: "18px",
+          contents: [
+            {
+              type: "text",
+              text: "您的專屬髮品推薦",
+              color: "#6E503B",
+              size: "sm",
+              weight: "bold",
+              gravity: "center",
+              flex: 1
+            },
+            {
+              type: "text",
+              text: "→",
+              color: "#6E503B",
+              size: "md",
+              weight: "bold",
+              align: "end",
+              gravity: "center"
+            }
+          ]
+        }
+      ]
+    }
+  };
+}
 
 async function sendToChat() {
   const recommended = getRecommended();
@@ -675,7 +723,7 @@ async function sendToChat() {
     return;
   }
 
-  const bubbles = recommended.map(pid => buildFlexBubble(PRODUCTS[pid]));
+  const bubbles = [buildIntroBubble(), ...recommended.map(pid => buildFlexBubble(PRODUCTS[pid]))];
 
   try {
     await liff.sendMessages([
@@ -694,7 +742,6 @@ async function sendToChat() {
     alert("傳送失敗，請確認是否在 LINE 中開啟。");
   }
 }
-
 // ── LIFF INIT ────────────────────────────────────────────────
 (async () => {
   try {
